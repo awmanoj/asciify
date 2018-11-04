@@ -25,7 +25,7 @@ func grayscale(img image.Image) image.Image {
 }
 
 // conver to ascii using the charmap defined
-func asciify(img image.Image) string {
+func asciify(img image.Image, algo int) string {
 	bounds := img.Bounds()
 	width, height := bounds.Max.X, bounds.Max.Y
 
@@ -50,7 +50,11 @@ func asciify(img image.Image) string {
 
 			avg := int((r + g + b) / 3)
 
-			ascii[y] += charmap[avg]
+			if algo == 1 {
+				ascii[y] += charmap[avg]
+			} else {
+				ascii[y] += charmap2[avg]
+			}
 		}
 	}
 

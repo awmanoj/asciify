@@ -46,7 +46,7 @@ func asciifyHandler(w http.ResponseWriter, r *http.Request) {
 	if ok && len(rhints) >= 1 {
 		rhint, _ = strconv.Atoi(rhints[0])
 	} else {
-		rhint = 5
+		rhint = 2
 	}
 
 	var maxw int
@@ -55,6 +55,19 @@ func asciifyHandler(w http.ResponseWriter, r *http.Request) {
 		maxw, _ = strconv.Atoi(maxws[0])
 	} else {
 		maxw = 200
+	}
+
+	var algo int
+	algos, ok := r.URL.Query()["algo"]
+	if ok && len(algos) >= 1 {
+		algo, _ = strconv.Atoi(algos[0])
+	} else {
+		algo = 2
+	}
+
+	// algo has to be 1 or 2, this basically determines the ascii charset to be used
+	if (algo != 1) && (algo != 2) {
+		algo = 2
 	}
 
 	keys, ok := r.URL.Query()["image_url"]
@@ -83,7 +96,7 @@ func asciifyHandler(w http.ResponseWriter, r *http.Request) {
 	img := resize.Resize(width, 0, imgOriginal, resize.Lanczos3)
 
 	// convert to grayscale and then asciify
-	ascii := asciify(grayscale(img))
+	ascii := asciify(grayscale(img), algo)
 
 	// write back
 	if _, err := w.Write([]byte(ascii)); err != nil {
