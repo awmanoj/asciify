@@ -5,6 +5,7 @@ import (
 	"log"
 	"math"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/nfnt/resize"
@@ -25,11 +26,18 @@ func main() {
 	flag.Parse()
 	logging.LogInit()
 
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "9000"
+	}
+
+	port = ":" + port
+
 	http.HandleFunc("/", asciifyHandler)
 
 	log.Println(banner)
-	log.Println("Listening on :9000")
-	log.Fatal(http.ListenAndServe(":9000", nil))
+	log.Println("Listening on " + port)
+	log.Fatal(http.ListenAndServe(port, nil))
 }
 
 func asciifyHandler(w http.ResponseWriter, r *http.Request) {
