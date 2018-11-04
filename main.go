@@ -54,7 +54,7 @@ func asciifyHandler(w http.ResponseWriter, r *http.Request) {
 	if ok && len(maxws) >= 1 {
 		maxw, _ = strconv.Atoi(maxws[0])
 	} else {
-		maxw = 200
+		maxw = 175
 	}
 
 	var algo int
