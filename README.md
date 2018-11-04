@@ -26,6 +26,8 @@ http://localhost:9000/?image_url=https://upload.wikimedia.org/wikipedia/commons/
 ``` 
 # Sample 
 
+Following image generated from [this image](https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Jnehru.jpg/220px-Jnehru.jpg) of Jawahar Lal Nehru, the first prime minister of India. 
+
 ![alt text](https://raw.githubusercontent.com/awmanoj/asciify/master/samples/jnh.png)
 
 # Parameters 
