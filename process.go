@@ -83,6 +83,9 @@ func rasterize(ascii []string, width, height, scale int) image.Image {
 	//height = int((1.0 / aspect) * float64(width))
 	width = scale * width
 	height = scale * height
+
+	log.Println(":: width, height = ", width, height)
+
 	//log.Println(width, height)
 
 	//box := packr.NewBox("./fonts")
