@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bytes"
 	"flag"
+	"image/jpeg"
 	"log"
 	"math"
 	"net/http"
@@ -49,6 +51,14 @@ func asciifyHandler(w http.ResponseWriter, r *http.Request) {
 		rhint = 2
 	}
 
+	var scale int
+	scales, ok := r.URL.Query()["scale"]
+	if ok && len(scales) >= 1 {
+		scale, _ = strconv.Atoi(scales[0])
+	} else {
+		scale = 10
+	}
+
 	var maxw int
 	maxws, ok := r.URL.Query()["maxw"]
 	if ok && len(maxws) >= 1 {
@@ -91,18 +101,35 @@ func asciifyHandler(w http.ResponseWriter, r *http.Request) {
 	// 		maxw = override the max width from 200 to whatever you want.
 	width := uint(math.Min(float64(maxw), float64(imgOriginal.Bounds().Max.X)/float64(rhint)))
 
-	log.Printf("maxw: [%d] rhint: [%d] width: [%d]\n", maxw, rhint, width)
+	//log.Printf("maxw: [%d] rhint: [%d] width: [%d]\n", maxw, rhint, width)
 
 	img := resize.Resize(width, 0, imgOriginal, resize.Lanczos3)
 
 	// convert to grayscale and then asciify
-	ascii := asciify(grayscale(img), algo)
+	asciiImage := asciify(grayscale(img), algo, scale)
 
-	// write back
-	if _, err := w.Write([]byte(ascii)); err != nil {
-		log.Println("unable to write image.")
-		http.Error(w, "unable to write image.", 500)
+	buffer := new(bytes.Buffer)
+	if err := jpeg.Encode(buffer, asciiImage, nil); err != nil {
+		log.Println("unable to encode image.")
+		http.Error(w, err.Error(), 500)
 		return
 	}
+
+	w.Header().Set("Content-Type", "image/jpeg")
+	w.Header().Set("Content-Length", strconv.Itoa(len(buffer.Bytes())))
+	if _, err := w.Write(buffer.Bytes()); err != nil {
+		log.Println("unable to write image.")
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	log.Printf("info input image url = [%s]\n", keys[0])
+
+	// // write back
+	// if _, err := w.Write([]byte(ascii)); err != nil {
+	// 	log.Println("unable to write image.")
+	// 	http.Error(w, "unable to write image.", 500)
+	// 	return
+	// }
 
 }
