@@ -8,7 +8,6 @@ import (
 
 	"log"
 
-	"github.com/gobuffalo/packr"
 	"github.com/golang/freetype/truetype"
 	"golang.org/x/image/font"
 	"golang.org/x/image/math/fixed"
@@ -86,14 +85,14 @@ func rasterize(ascii []string, width, height, scale int) image.Image {
 	height = scale * height
 	//log.Println(width, height)
 
-	box := packr.NewBox("./fonts")
-	fontBytes, err := box.FindString("monospace.ttf")
-	if err != nil {
-		log.Println("err", "finding the font file", err)
-		return nil
-	}
+	//box := packr.NewBox("./fonts")
+	//fontBytes, err := box.FindString("monospace.ttf")
+	// if err != nil {
+	// 	log.Println("err", "finding the font file", err)
+	// 	return nil
+	// }
 
-	f, err := truetype.Parse([]byte(fontBytes))
+	f, err := truetype.Parse([]byte(monospaceTTF))
 	if err != nil {
 		log.Println(err)
 		return nil
