@@ -2,10 +2,80 @@
 
 
 [[projects]]
+  name = "github.com/gobuffalo/envy"
+  packages = ["."]
+  revision = "7e7ddcbb431d1d9e32121d7eeee8d68bdecd7081"
+  version = "v1.6.10"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/gobuffalo/packd"
+  packages = ["."]
+  revision = "311c6248e5fbdcd13b3ce364f00073506d8154e6"
+
+[[projects]]
+  name = "github.com/gobuffalo/packr"
+  packages = ["."]
+  revision = "ba3c3ae9169fdc7b283f00a4b4c39346e444871c"
+  version = "v1.21.5"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/gobuffalo/syncx"
+  packages = ["."]
+  revision = "558ac7de985fc4f4057bff27c7bdf99e92fe0750"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/golang/freetype"
+  packages = [
+    "raster",
+    "truetype"
+  ]
+  revision = "e2365dfdc4a05e4b8299a783240d4a7d5a65d4e4"
+
+[[projects]]
+  name = "github.com/joho/godotenv"
+  packages = ["."]
+  revision = "23d116af351c84513e1946b527c88823e476be13"
+  version = "v1.3.0"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/markbates/oncer"
+  packages = ["."]
+  revision = "05fccaae8fc423476d98fd4c3e4699ba0fbbde48"
+
+[[projects]]
   branch = "master"
   name = "github.com/nfnt/resize"
   packages = ["."]
   revision = "83c6a9932646f83e3267f353373d47347b6036b2"
+
+[[projects]]
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
+  version = "v0.8.0"
+
+[[projects]]
+  name = "github.com/rogpeppe/go-internal"
+  packages = [
+    "modfile",
+    "module",
+    "semver"
+  ]
+  revision = "d87f08a7d80821c797ffc8eb8f4e01675f378736"
+  version = "v1.0.0"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/image"
+  packages = [
+    "font",
+    "math/fixed"
+  ]
+  revision = "cd38e8056d9b27bb2f265effa37fb0ea6b8a7f0f"
 
 [[projects]]
   name = "gopkg.in/gcfg.v1"
@@ -33,6 +103,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "34b46525e07ac354d926b046a6b17767a232bddc2d367d55d9a138e8120d8532"
+  inputs-digest = "5559fa763a47b2a6dde449de2a7954cb2fa2979c6fce9fc831488a6dc06f2067"
   solver-name = "gps-cdcl"
   solver-version = 1
