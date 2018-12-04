@@ -67,6 +67,14 @@ func asciifyHandler(w http.ResponseWriter, r *http.Request) {
 		maxw = 1000
 	}
 
+	// var maxw int
+	// maxws, ok := r.URL.Query()["maxw"]
+	// if ok && len(maxws) >= 1 {
+	// 	maxw, _ = strconv.Atoi(maxws[0])
+	// } else {
+	// 	maxw = 1000
+	// }
+
 	var algo int
 	algos, ok := r.URL.Query()["algo"]
 	if ok && len(algos) >= 1 {
@@ -99,9 +107,17 @@ func asciifyHandler(w http.ResponseWriter, r *http.Request) {
 	// two tweaks possible using params:
 	// 		rhint = how much downsize should you do. more the value small the width.
 	// 		maxw = override the max width from 200 to whatever you want.
-	width := uint(math.Min(float64(maxw), float64(imgOriginal.Bounds().Max.X)/float64(rhint)))
-
+	width := uint(math.Max(float64(maxw), float64(imgOriginal.Bounds().Max.X)/float64(rhint)))
+	// width := uint(imgOriginal.Bounds().Max.X / (scale / 2))
 	//log.Printf("maxw: [%d] rhint: [%d] width: [%d]\n", maxw, rhint, width)
+
+	//originalWidth := uint(imgOriginal.Bounds().Max.X)
+	//originalHeight := uint(imgOriginal.Bounds().Max.Y)
+
+	//aspectRatio := float64(originalWidth) / float64(originalHeight)
+
+	//width := uint(desiredWidth)
+	//height := uint((1.0 / aspectRatio) * float64(width))
 
 	img := resize.Resize(width, 0, imgOriginal, resize.Lanczos3)
 
