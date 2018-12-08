@@ -39,8 +39,7 @@ Following are the parameters:
 | Parameter Name | Description | Mandatory | Default |
 | ---            | ---         | ---       | ----    | 
 | image_url      | URL of the image to be asciified | Yes     | No | 
-| rhint          | Reduce the size of the image by this fraction | No   | 4  | 
-| maxw           | Maximum width of the output image (aspect ratio always maitained)  | No  | 200  | 
+| dscale         | Reduce the size of the image by this fraction | No   | 3  | 
 
 
 
