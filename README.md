@@ -22,7 +22,7 @@ $ ./asciify
 You can open your browser and send a request to the server. For example: 
 
 ```
-http://localhost:9000/?image_url=https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Jnehru.jpg/220px-Jnehru.jpg 
+http://localhost:9000/?dscale=2&image_url=https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Jnehru.jpg/220px-Jnehru.jpg 
 ``` 
 # Sample 
 
