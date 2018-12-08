@@ -30,6 +30,8 @@ Following image generated from [this image](https://upload.wikimedia.org/wikiped
 
 ![alt text](https://raw.githubusercontent.com/awmanoj/asciify/master/samples/jnh.png)
 
+If image is not clear (if there is lot of background for example) then pass `?dscale=1` or `dscale=2` parameter. Default value is `dscale=3`. To increase graininess increase this value.
+
 # Parameters 
 
 Following are the parameters: 
