@@ -5,7 +5,6 @@ import (
 	"flag"
 	"image/jpeg"
 	"log"
-	"math"
 	"net/http"
 	"os"
 	"strconv"
@@ -43,29 +42,26 @@ func main() {
 }
 
 func asciifyHandler(w http.ResponseWriter, r *http.Request) {
-	var rhint int
-	rhints, ok := r.URL.Query()["rhint"]
-	if ok && len(rhints) >= 1 {
-		rhint, _ = strconv.Atoi(rhints[0])
+	var dscale int
+	dscales, ok := r.URL.Query()["dscale"]
+	if ok && len(dscales) >= 1 {
+		dscale, _ = strconv.Atoi(dscales[0])
 	} else {
-		rhint = 2
+		dscale = 3
 	}
 
-	var scale int
-	scales, ok := r.URL.Query()["scale"]
-	if ok && len(scales) >= 1 {
-		scale, _ = strconv.Atoi(scales[0])
-	} else {
-		scale = 10
+	if dscale < 1 {
+		dscale = 3
+		log.Println("warn dscale parameter less 1, using default value dcale = ", dscale)
 	}
 
-	var maxw int
-	maxws, ok := r.URL.Query()["maxw"]
-	if ok && len(maxws) >= 1 {
-		maxw, _ = strconv.Atoi(maxws[0])
-	} else {
-		maxw = 1000
-	}
+	// var maxw int
+	// maxws, ok := r.URL.Query()["maxw"]
+	// if ok && len(maxws) >= 1 {
+	// 	maxw, _ = strconv.Atoi(maxws[0])
+	// } else {
+	// 	maxw = 800
+	// }
 
 	var algo int
 	algos, ok := r.URL.Query()["algo"]
@@ -95,16 +91,21 @@ func asciifyHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	//log.Println("original width", imgOriginal.Bounds().Max.X)
+	//log.Println("original height", imgOriginal.Bounds().Max.Y)
+
 	// maximum width should be 200 for rendering well on the browser.
 	// two tweaks possible using params:
 	// 		rhint = how much downsize should you do. more the value small the width.
 	// 		maxw = override the max width from 200 to whatever you want.
-	width := uint(math.Max(float64(maxw), float64(imgOriginal.Bounds().Max.X)/float64(rhint)))
+	width := uint(float64(imgOriginal.Bounds().Max.X) / float64(dscale))
 
 	img := resize.Resize(width, 0, imgOriginal, resize.Lanczos3)
 
 	// convert to grayscale and then asciify
-	asciiImage := asciify(grayscale(img), algo, scale)
+	asciiImage := asciify(grayscale(img), algo)
+
+	//asciiImage2 := resize.Resize(width, 0, asciiImage, resize.Lanczos3)
 
 	buffer := new(bytes.Buffer)
 	if err := jpeg.Encode(buffer, asciiImage, nil); err != nil {

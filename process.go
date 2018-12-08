@@ -17,7 +17,7 @@ var (
 	dpi = flag.Float64("dpi", 72, "screen resolution in Dots Per Inch")
 	//fontfile = flag.String("fontfile", "../../testdata/luxisr.ttf", "filename of the ttf font")
 	hinting = flag.String("hinting", "none", "none | full")
-	size    = flag.Float64("size", 12, "font size in points")
+	size    = flag.Float64("size", 8.5, "font size in points")
 	spacing = flag.Float64("spacing", 1.5, "line spacing (e.g. 2 means double spaced)")
 	wonb    = flag.Bool("whiteonblack", false, "white text on a black background")
 )
@@ -40,7 +40,7 @@ func grayscale(img image.Image) image.Image {
 }
 
 // conver to ascii using the charmap defined
-func asciify(img image.Image, algo int, scale int) image.Image {
+func asciify(img image.Image, algo int) image.Image {
 	bounds := img.Bounds()
 	width, height := bounds.Max.X, bounds.Max.Y
 
@@ -73,27 +73,26 @@ func asciify(img image.Image, algo int, scale int) image.Image {
 		}
 	}
 
-	return rasterize(ascii, width, height, scale)
+	return rasterize(ascii, width, height)
 }
 
-func rasterize(ascii []string, width, height, scale int) image.Image {
-	//log.Println(width, height)
-	//aspect := float64(width) / float64(height)
-	//width = 800
-	//height = int((1.0 / aspect) * float64(width))
-	width = scale * width
-	height = scale * height
+func rasterize(ascii []string, width, height int) image.Image {
+	// delta is gap between two lins
+	var delta = 5
 
-	log.Println(":: width, height = ", width, height)
+	// length is total number of lines
+	var length = len(ascii)
 
-	//log.Println(width, height)
+	//log.Println("length", length)
 
-	//box := packr.NewBox("./fonts")
-	//fontBytes, err := box.FindString("monospace.ttf")
-	// if err != nil {
-	// 	log.Println("err", "finding the font file", err)
-	// 	return nil
-	// }
+	// don't change the order here, notice we are using the passed
+	var height2 = int(float64(length) * float64(delta))
+	var width2 = int((float64(width) / float64(height)) * float64(height2))
+
+	//log.Println(":: width2, height2 = ", width2, height2)
+
+	width = width2
+	height = height2
 
 	f, err := truetype.Parse([]byte(monospaceTTF))
 	if err != nil {
@@ -102,17 +101,13 @@ func rasterize(ascii []string, width, height, scale int) image.Image {
 	}
 
 	fg, bg := image.Black, image.White
-	ruler := color.RGBA{0xdd, 0xdd, 0xdd, 0xff}
+	//ruler := color.RGBA{0xdd, 0xdd, 0xdd, 0xff}
 	if *wonb {
 		fg, bg = image.White, image.Black
-		ruler = color.RGBA{0x22, 0x22, 0x22, 0xff}
+		//ruler = color.RGBA{0x22, 0x22, 0x22, 0xff}
 	}
 	rgba := image.NewRGBA(image.Rect(0, 0, width, height))
 	draw.Draw(rgba, rgba.Bounds(), bg, image.ZP, draw.Src)
-	for i := 0; i < 200; i++ {
-		rgba.Set(10, 10+i, ruler)
-		rgba.Set(10+i, 10, ruler)
-	}
 
 	// Draw the text.
 	h := font.HintingNone
@@ -130,11 +125,11 @@ func rasterize(ascii []string, width, height, scale int) image.Image {
 		}),
 	}
 
-	y := 10
+	y := 5
 	for _, s := range ascii {
 		d.Dot = fixed.P(0, y)
 		d.DrawString(s)
-		y += 10
+		y += 5
 	}
 
 	var img image.Image = rgba
