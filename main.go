@@ -55,13 +55,13 @@ func asciifyHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println("warn dscale parameter less 1, using default value dcale = ", dscale)
 	}
 
-	// var maxw int
-	// maxws, ok := r.URL.Query()["maxw"]
-	// if ok && len(maxws) >= 1 {
-	// 	maxw, _ = strconv.Atoi(maxws[0])
-	// } else {
-	// 	maxw = 800
-	// }
+	var maxw int
+	maxws, ok := r.URL.Query()["maxw"]
+	if ok && len(maxws) >= 1 {
+		maxw, _ = strconv.Atoi(maxws[0])
+	} else {
+		maxw = 0
+	}
 
 	var algo int
 	algos, ok := r.URL.Query()["algo"]
@@ -98,7 +98,12 @@ func asciifyHandler(w http.ResponseWriter, r *http.Request) {
 	// two tweaks possible using params:
 	// 		rhint = how much downsize should you do. more the value small the width.
 	// 		maxw = override the max width from 200 to whatever you want.
-	width := uint(float64(imgOriginal.Bounds().Max.X) / float64(dscale))
+	var width uint
+	if maxw == 0 {
+		width = uint(float64(imgOriginal.Bounds().Max.X) / float64(dscale))
+	} else {
+		width = uint(maxw)
+	}
 
 	img := resize.Resize(width, 0, imgOriginal, resize.Lanczos3)
 

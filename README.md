@@ -30,7 +30,9 @@ Following image generated from [this image](https://upload.wikimedia.org/wikiped
 
 ![alt text](https://raw.githubusercontent.com/awmanoj/asciify/master/samples/jnh.png)
 
-If image is not clear (if there is lot of background for example) then pass `?dscale=1` or `dscale=2` parameter. Default value is `dscale=3`. To increase graininess increase this value.
+If image is not clear (if there is lot of background for example) then pass `?dscale=1` or `dscale=2` parameter. Default value is `dscale=3`. To increase graininess increase this value. 
+
+Alternatively, play with increasing `maxw` to a considerable size.
 
 # Parameters 
 
@@ -40,6 +42,7 @@ Following are the parameters:
 | ---            | ---         | ---       | ----    | 
 | image_url      | URL of the image to be asciified | Yes     | No | 
 | dscale         | Reduce the size of the image by this fraction | No   | 3  | 
+| maxw         | Override the width | No   | 0 (Ignored)  | 
 
 
 
